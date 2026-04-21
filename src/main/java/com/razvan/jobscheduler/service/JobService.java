@@ -25,6 +25,14 @@ public class JobService {
         return jobRepository.save(job);
     }
 
+    public Job updateJob(Job job) {
+        return jobRepository.save(job);
+    }
+
+    public void deleteJob(Long id) {
+        jobRepository.deleteById(id);
+    }
+
     public List<Job> getPrioritizedJobs(){
         List<Job> jobsList = jobRepository.findAll();
         TreeMap<Double, List<Job>> jobsPrioritized = new TreeMap<>(Collections.reverseOrder());

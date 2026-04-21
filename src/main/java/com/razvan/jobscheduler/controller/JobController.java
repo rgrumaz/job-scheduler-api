@@ -26,6 +26,16 @@ public class JobController {
         return jobService.createJob(job);
     }
 
+    @PutMapping("/{id}")
+    public Job updateJob(@PathVariable Long id, @RequestBody Job job) {
+        return  jobService.updateJob(job);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteJob(@PathVariable Long id) {
+        jobService.deleteJob(id);
+    }
+
     @GetMapping("/prioritized")
     public List<Job> getPrioritizedJobs() {
         return jobService.getPrioritizedJobs();

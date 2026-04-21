@@ -1,12 +1,15 @@
 package com.razvan.jobscheduler.service;
 
 import com.razvan.jobscheduler.model.Job;
+import com.razvan.jobscheduler.model.JobStatus;
 import com.razvan.jobscheduler.repository.JobRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class JobService {
@@ -31,6 +34,37 @@ public class JobService {
 
     public void deleteJob(Long id) {
         jobRepository.deleteById(id);
+    }
+
+    @Scheduled(fixedRate = 1, timeUnit = TimeUnit.HOURS)
+    public void updateDatabase(){
+        List<Job> jobs = getAllJobs();
+        jobs.forEach(job -> {
+            if (job.isAccepted()) {
+                job.setStatus(JobStatus.RUNNING);
+                if (remainingDeadlineTime(job) < 0) {
+                    job.setStatus(JobStatus.FAILED);
+                }
+            } else {
+                job.setStatus(JobStatus.PENDING);
+            }
+        });
+        jobRepository.saveAll(jobs);
+    }
+
+    public long remainingDeadlineTime(Job job) {
+        LocalDateTime now = LocalDateTime.now();
+        return ChronoUnit.HOURS.between(now, job.getDeadline());
+    }
+
+    public Job completeJob(Long id) {
+        Job job = jobRepository.findById(id).orElseThrow();
+        if (remainingDeadlineTime(job) < 0) {
+            job.setStatus(JobStatus.LATE);
+        } else {
+            job.setStatus(JobStatus.DONE);
+        }
+        return jobRepository.save(job);
     }
 
     public List<Job> getPrioritizedJobs(){

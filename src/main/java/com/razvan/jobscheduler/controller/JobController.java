@@ -1,6 +1,7 @@
 package com.razvan.jobscheduler.controller;
 
 import com.razvan.jobscheduler.model.Job;
+import com.razvan.jobscheduler.repository.JobRepository;
 import com.razvan.jobscheduler.service.JobService;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ public class JobController {
 
     private final JobService jobService;
 
-    public JobController(JobService jobService) {
+    public JobController(JobService jobService, JobRepository jobRepository) {
         this.jobService = jobService;
     }
 
@@ -29,6 +30,11 @@ public class JobController {
     @PutMapping("/{id}")
     public Job updateJob(@PathVariable Long id, @RequestBody Job job) {
         return  jobService.updateJob(job);
+    }
+
+    @PatchMapping("/{id}/completed")
+    public Job completeJob(@PathVariable Long id) {
+        return jobService.completeJob(id);
     }
 
     @DeleteMapping("/{id}")

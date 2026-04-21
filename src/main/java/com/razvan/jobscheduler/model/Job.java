@@ -13,19 +13,21 @@ public class Job {
 
     private String title;
     private String description;
+    private boolean accepted = false;
     private int priority;
     private LocalDateTime deadline;
 
     @Enumerated(EnumType.STRING)
     private JobStatus status;
 
-    public Job(Long id, int priority, String description, String title, JobStatus status, LocalDateTime deadline) {
+    public Job(Long id, int priority, String description, String title, JobStatus status, LocalDateTime deadline, Boolean accepted) {
         this.id = id;
         this.priority = priority;
         this.description = description;
         this.title = title;
         this.status = status;
         this.deadline = deadline;
+        this.accepted = accepted;
     }
 
     public Job() {
@@ -37,6 +39,14 @@ public class Job {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 
     public JobStatus getStatus() {

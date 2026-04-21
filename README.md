@@ -1,18 +1,18 @@
 # Job Scheduler API
 
-A REST API for managing and automatically prioritizing jobs based on business importance and deadline urgency. Built with Spring Boot, JPA, and an in-memory H2 database.
+A REST API for managing and prioritizing jobs based on business importance and deadline urgency. Built with Spring Boot, JPA, and an in-memory H2 database.
 
 ## What it does
 
-The core feature is a custom scheduling algorithm that calculates a priority score for every job by combining two factors:
+The core feature is a custom scheduling algorithm that calculates a priority score for each job by combining two factors:
 
-- **Business priority** (manually set, 1–10)
-- **Deadline urgency** (dynamically weighted — the closer the deadline, the higher the score)
+- **Business priority** (manually set, 1-10)
+- **Deadline urgency** (dynamically weighted, the closer the deadline the higher the score)
 
 The weighting shifts depending on how much time is left:
-- More than 5 days out → coarse scoring by days
-- Under 5 days → finer scoring with increased weight
-- Under 24 hours → highest multiplier kicks in
+- More than 5 days out: coarse scoring by days
+- Under 5 days: finer scoring with increased weight
+- Under 24 hours: highest multiplier kicks in
 
 Jobs are returned sorted by score, highest first.
 
@@ -95,5 +95,5 @@ src/main/java/com/razvan/jobscheduler/
 
 ## Notes
 
-- H2 is in-memory, so data resets on every restart (sample jobs are re-seeded automatically)
+- H2 is in-memory, data resets on every restart (sample jobs are re-seeded automatically)
 - `JobStatus` values: `PENDING`, `RUNNING`, `DONE`, `FAILED`

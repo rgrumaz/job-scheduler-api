@@ -25,4 +25,9 @@ public class JobController {
     public Job createJob(@RequestBody Job job) {
         return jobService.createJob(job);
     }
+
+    @GetMapping("/prioritized")
+    public List<Job> getPrioritizedJobs() {
+        return jobService.getPrioritizedJobs();
+    }
 }

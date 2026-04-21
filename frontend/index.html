@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Job Scheduler</title>
+        <link rel="stylesheet" href="output.css">
+    </head>
+
+    <body class="bg-gray-950 text-gray-100 font-sans">
+        <nav class="border-b border-gray-800 px-8 py-4 flex items-center justify-between">
+            <span class="font-mono text-sm text-green-400">job-scheduler /</span>
+            <span id="api-status" class="font-mono text-sm text-green-400">connecting
+                <span class="dot">.</span>
+                <span class="dot">.</span>
+                <span class="dot">.</span>
+            </span>
+        </nav>
+
+        <div class="flex h-screen">
+            <aside class="w-80 border-r border-gray-800 p-6">
+                <h2 class=" font-mono text-xs text-gray-500 uppercase tracking-widest mb-4">New Job</h2>
+            </aside>
+            <main class="flex-1 p-6">
+                <h2 class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-4">Jobs</h2>
+            </main>
+        </div>
+
+        <script src="app.js"></script>
+    </body>
+</html>

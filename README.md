@@ -1,6 +1,6 @@
 # Job Scheduler API
 
-A REST API for managing and prioritizing jobs based on business importance and deadline urgency. Built with Spring Boot, JPA, and an in-memory H2 database.
+A REST API for managing and automatically prioritizing jobs based on business importance and deadline urgency. Built with Spring Boot, JPA, and an in-memory H2 database.
 
 ## What it does
 
@@ -15,6 +15,8 @@ The weighting shifts depending on how much time is left:
 - Under 24 hours: highest multiplier kicks in
 
 Jobs are returned sorted by score, highest first.
+
+A background scheduler runs every hour and automatically updates job statuses based on whether they have been accepted and whether their deadline has passed.
 
 ## Tech stack
 
@@ -43,6 +45,11 @@ The app starts on `http://localhost:8080`. On first run, 20 sample jobs are seed
 GET /jobs
 ```
 
+### Get jobs sorted by priority score
+```
+GET /jobs/prioritized
+```
+
 ### Create a job
 ```
 POST /jobs
@@ -53,13 +60,9 @@ Content-Type: application/json
   "description": "Migrate to new production server",
   "priority": 9,
   "deadline": "2026-04-22T10:00:00",
-  "status": "PENDING"
+  "status": "PENDING",
+  "accepted": false
 }
-```
-
-### Get jobs sorted by priority score
-```
-GET /jobs/prioritized
 ```
 
 ### Update a job
@@ -73,21 +76,41 @@ Content-Type: application/json
   "description": "Migrate to new production server",
   "priority": 10,
   "deadline": "2026-04-22T10:00:00",
-  "status": "RUNNING"
+  "status": "RUNNING",
+  "accepted": true
 }
 ```
+
+### Mark a job as complete
+```
+PATCH /jobs/{id}/completed
+```
+
+Returns `DONE` if submitted before the deadline, `LATE` if submitted after.
 
 ### Delete a job
 ```
 DELETE /jobs/{id}
 ```
 
+## Job lifecycle
+
+Jobs move through the following statuses:
+
+- `PENDING` - job has not been accepted yet
+- `RUNNING` - job has been accepted and is in progress
+- `DONE` - job was completed before the deadline
+- `LATE` - job was submitted after the deadline
+- `FAILED` - deadline passed without submission
+
+The background scheduler checks all jobs every hour and updates statuses automatically. Jobs that are accepted flip to `RUNNING`. Jobs that are accepted but past their deadline flip to `FAILED`.
+
 ## Project structure
 
 ```
 src/main/java/com/razvan/jobscheduler/
 ├── controller/    # HTTP endpoints
-├── service/       # Business logic and scheduling algorithm
+├── service/       # Business logic, scheduling algorithm and background scheduler
 ├── repository/    # Database access via JPA
 ├── model/         # Job entity and JobStatus enum
 └── DataSeeder.java
@@ -96,4 +119,4 @@ src/main/java/com/razvan/jobscheduler/
 ## Notes
 
 - H2 is in-memory, data resets on every restart (sample jobs are re-seeded automatically)
-- `JobStatus` values: `PENDING`, `RUNNING`, `DONE`, `FAILED`
+- The priority score is recalculated on every request to `/jobs/prioritized`, so it always reflects current deadlines

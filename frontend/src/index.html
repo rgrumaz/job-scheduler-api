@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Job Scheduler</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="output.css">
     </head>
 
@@ -19,10 +21,43 @@
 
         <div class="flex h-screen">
             <aside class="w-80 border-r border-gray-800 p-6">
-                <h2 class=" font-mono text-xs text-gray-500 uppercase tracking-widest mb-4">New Job</h2>
+                <h2 class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-4">New Job</h2>
+                <div class="flex flex-col gap-4">
+
+                    <div class="flex flex-col gap-1">
+                        <label class="font-mono text-xs text-gray-500">Title</label>
+                        <input id="f-title" type="text" placeholder="e.g. Server Migration"
+                            class="bg-gray-900 border border-gray-700 text-gray-100 text-sm px-3 py-2 focus:outline-none focus:border-gray-500">
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label class="font-mono text-xs text-gray-500">Description</label>
+                        <textarea id="f-desc" placeholder="What needs to be done?"
+                            class="bg-gray-900 border border-gray-700 text-gray-100 text-sm px-3 py-2 focus:outline-none focus:border-gray-500 resize-none h-20"></textarea>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label class="font-mono text-xs text-gray-500">Priority (1-10)</label>
+                        <input id="f-priority" type="number" min="1" max="10" value="5"
+                            class="bg-gray-900 border border-gray-700 text-gray-100 text-sm px-3 py-2 focus:outline-none focus:border-gray-500">
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label class="font-mono text-xs text-gray-500">Deadline</label>
+                        <input id="f-deadline" type="datetime-local"
+                            class="bg-gray-900 border border-gray-700 text-gray-100 text-sm px-3 py-2 focus:outline-none focus:border-gray-500">
+                    </div>
+
+                    <button id="btn-create" class="bg-green-400 text-black font-mono text-xs py-2 mt-2 hover:bg-green-300">
+                        + Create Job
+                    </button>
+
+                </div>
             </aside>
             <main class="flex-1 p-6">
                 <h2 class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-4">Jobs</h2>
+                <div id="jobs-container" class="flex flex-col gap-3">
+                </div>
             </main>
         </div>
 

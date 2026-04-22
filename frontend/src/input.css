@@ -2,18 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'Inter';
-    src: url('./fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
-    font-weight: 100 900;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url('./fonts/JetBrainsMono-VariableFont_wght.ttf') format('truetype');
-    font-weight: 100 800;
-    font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 .dot { opacity: 0; }

@@ -41,7 +41,7 @@ public class JobController {
         return jobService.postponeJob(id);
     }
 
-    @PatchMapping("/{id}/accept")
+    @PatchMapping("/{id}/accepted")
     public Job acceptJob(@PathVariable Long id) {
         return jobService.acceptJob(id);
     }

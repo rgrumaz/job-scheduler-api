@@ -67,6 +67,20 @@ public class JobService {
         return jobRepository.save(job);
     }
 
+    public Job postponeJob(Long id) {
+        Job job = jobRepository.findById(id).orElseThrow();
+        job.setAccepted(false);
+        job.setStatus(JobStatus.POSTPONED);
+        return jobRepository.save(job);
+    }
+
+    public Job acceptJob(Long id) {
+        Job job = jobRepository.findById(id).orElseThrow();
+        job.setAccepted(true);
+        job.setStatus(JobStatus.RUNNING);
+        return jobRepository.save(job);
+    }
+
     public List<Job> getPrioritizedJobs(){
         List<Job> jobsList = jobRepository.findAll();
         TreeMap<Double, List<Job>> jobsPrioritized = new TreeMap<>(Collections.reverseOrder());
